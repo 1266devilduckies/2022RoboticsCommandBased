@@ -7,8 +7,14 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ShooterSubsystem extends SubsystemBase {
+  
+  private static ShooterSubsystem instance;
+  
   /** Creates a new Shooter Subsystem. */
   public ShooterSubsystem() {}
+
+  //all possible drivetrain function should be defined here
+  //DO NOT DEFINE COMMANDS HERE, ONLY SIMPLE FUNCTIONS
 
   @Override
   public void periodic() {
@@ -18,5 +24,12 @@ public class ShooterSubsystem extends SubsystemBase {
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
+  }
+
+  public static synchronized ShooterSubsystem getInstance() {
+    if (instance == null) {
+      instance = new ShooterSubsystem();
+    }
+    return instance;
   }
 }

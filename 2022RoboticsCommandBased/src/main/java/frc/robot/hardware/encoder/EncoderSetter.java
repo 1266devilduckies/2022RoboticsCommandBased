@@ -21,6 +21,7 @@ public class EncoderSetter {
 
   // updates the encoders with new positions
   public static void updateEncoders() {
+    //UPDATE LATER
     //RobotMap.avgPositionRaw = RobotMap.MainLeftMotorBack.getSelectedSensorPosition(0);
     //RobotMap.avgPositionInMeters = nativeUnitsToDistanceMeters(RobotMap.avgPositionRaw);
   }
