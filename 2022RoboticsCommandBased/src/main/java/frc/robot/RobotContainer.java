@@ -6,9 +6,15 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-import frc.robot.commands.ExampleCommand;
-import frc.robot.subsystems.ExampleSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.hardware.input.Controller;
+import frc.robot.hardware.limelight.Limelight;
+import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.DriveTrainSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.commands.*;
+import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a
@@ -18,12 +24,33 @@ import edu.wpi.first.wpilibj2.command.Command;
  */
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
-  private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
+  private ClimberSubsystem m_climber;
+  private DriveTrainSubsystem m_drivetrain;
+  private IntakeSubsystem m_intake;
+  private ShooterSubsystem m_shooter;
 
-  private final ExampleCommand m_autoCommand = new ExampleCommand(m_exampleSubsystem);
+  private CommandScheduler m_commandScheduler = CommandScheduler.getInstance();
+
+  private Controller pilotController;
+  private Controller copilotController;
+
+  private Limelight m_limelight;
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
   public RobotContainer() {
+    // Instantiate subsystems
+    m_climber = ClimberSubsystem.getInstance();
+    m_drivetrain = DriveTrainSubsystem.getInstance();
+    m_intake = IntakeSubsystem.getInstance();
+    m_shooter = ShooterSubsystem.getInstance();
+    
+    pilotController = new Controller(0);
+    copilotController = new Controller(1);
+
+    m_limelight = new Limelight();
+
+    m_commandScheduler.setDefaultCommand(m_drivetrain, new WorseKearnyDriving());
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -42,7 +69,6 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // An ExampleCommand will run in autonomous
-    return m_autoCommand;
+    return null;
   }
 }
