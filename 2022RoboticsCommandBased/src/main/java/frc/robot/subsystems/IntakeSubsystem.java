@@ -42,9 +42,6 @@ public class IntakeSubsystem extends SubsystemBase {
   public void shooterNeed(){
     intakeSolenoid.set(true);
   }
-  public void AfterShooterNeed(){
-    intakeSolenoid.set(false);
-  }
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

@@ -63,4 +63,7 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     return instance;
   }
+
+  public void bothExtend() {
+  }
 }
