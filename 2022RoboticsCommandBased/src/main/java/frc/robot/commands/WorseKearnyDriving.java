@@ -30,13 +30,13 @@ public class WorseKearnyDriving extends CommandBase {
     boolean inPlaceTurn = false;
     if(Math.abs(xSpeed) < 0.05) inPlaceTurn = true;
 
-    m_drivetrain.getDifferentialDrive().curvatureDrive(xSpeed, spinSpeed, inPlaceTurn);
+    m_drivetrain.curvatureDrive(xSpeed, spinSpeed, inPlaceTurn);
 
   }
 
   @Override
   public void end(boolean interrupted) {
-    m_drivetrain.getDifferentialDrive().stopMotor();
+    m_drivetrain.stop();
   }
     
   @Override

@@ -11,8 +11,9 @@ import frc.robot.hardware.limelight.Limelight;
 import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
-import frc.robot.commands.*;
+import frc.robot.commands.WorseKearnyDriving;
 import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -49,7 +50,9 @@ public class RobotContainer {
 
     m_limelight = new Limelight();
 
-    m_commandScheduler.setDefaultCommand(m_drivetrain, new WorseKearnyDriving());
+    /*m_commandScheduler.setDefaultCommand(m_drivetrain, 
+        new WorseKearnyDriving(m_drivetrain, pilotController::getLeftStickY(), pilotController::getRightStickX()));
+    */
 
     // Configure the button bindings
     configureButtonBindings();
