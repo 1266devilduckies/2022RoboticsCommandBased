@@ -52,6 +52,11 @@ public class ShooterSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  /**
+   * This method insures that only one instance of a Subsystem can be accessed
+   * 
+   * @return class instance
+   */
   public static synchronized ShooterSubsystem getInstance() {
     if (instance == null) {
       instance = new ShooterSubsystem();

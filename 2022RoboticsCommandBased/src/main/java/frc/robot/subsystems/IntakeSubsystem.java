@@ -16,6 +16,9 @@ public class IntakeSubsystem extends SubsystemBase {
     private VictorSPX m_IntakeMotor;
     public Solenoid intakeSolenoid;
     /** Creates a new Intake Subsystem. */
+  
+  
+  /** Creates a new Intake Subsystem. */
   public IntakeSubsystem() {}
 
   //all possible intake function should be defined here
@@ -47,6 +50,11 @@ public class IntakeSubsystem extends SubsystemBase {
     // This method will be called once per scheduler run during simulation
   }
 
+  /**
+   * This method insures that only one instance of a Subsystem can be accessed
+   * 
+   * @return class instance
+   */
   public static synchronized IntakeSubsystem getInstance() {
     if (instance == null) {
       instance = new IntakeSubsystem();

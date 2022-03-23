@@ -13,6 +13,10 @@ import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.commands.WorseKearnyDriving;
+import frc.robot.subsystems.ShooterSubsystem;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
@@ -37,8 +41,10 @@ public class RobotContainer {
   
 
   /** The container for the robot. Contains subsystems, OI devices, and commands. */
-  public RobotContainer() {
 
+  /** The container for the robot. Contains subsystems, OI devices, and commands. */
+  public RobotContainer() {
+    // Instantiate subsystems
     m_climber = ClimberSubsystem.getInstance();
     m_drivetrain = DriveTrainSubsystem.getInstance();
     m_intake = IntakeSubsystem.getInstance();
@@ -48,6 +54,15 @@ public class RobotContainer {
     coPilotController = new Controller(); 
 
 
+    
+    pilotController = new Controller(0);
+    coPilotController = new Controller(1);
+
+    m_limelight = new Limelight();
+
+    /*m_commandScheduler.setDefaultCommand(m_drivetrain, 
+        new WorseKearnyDriving(m_drivetrain, pilotController::getLeftStickY(), pilotController::getRightStickX()));
+    */
 
     // Configure the button bindings
     configureButtonBindings();
