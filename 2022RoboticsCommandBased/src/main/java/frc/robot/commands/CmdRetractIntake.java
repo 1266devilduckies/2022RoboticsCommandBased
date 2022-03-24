@@ -7,7 +7,7 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class CmdRetractIntake extends CommandBase {
   // The subsystem the command runs on
-  private final Subsystem m_IntakeSubsystem;
+  private final IntakeSubsystem m_IntakeSubsystem;
 
   public CmdRetractIntake(IntakeSubsystem subsystem) {
     m_IntakeSubsystem = subsystem;
@@ -16,7 +16,7 @@ public class CmdRetractIntake extends CommandBase {
 
   @Override
   public void initialize() {
-    ((IntakeSubsystem) m_IntakeSubsystem).IntakeStop();//? maybe causing it to fail
+    m_IntakeSubsystem.intakeStopRetract();
   }
 
   @Override

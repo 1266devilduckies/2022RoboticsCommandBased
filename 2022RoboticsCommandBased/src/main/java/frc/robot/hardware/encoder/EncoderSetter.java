@@ -10,22 +10,6 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 public class EncoderSetter {
     
-    // converts sensor readings to meters
-  public static double nativeUnitsToDistanceMeters(double sensorCounts) {
-    double motorRotations = (double) sensorCounts / 2048.0; // is units per rotation for the falcons
-    double wheelRotations = motorRotations / 8.333; // 8.333:1 is gear ratio
-    double positionMeters = wheelRotations * (2 * Math.PI * 0.0508); // 2 inches in meters is 0.0508 meters. the wheels
-                                                                    // radius is 2 inches
-    return positionMeters;
-  }
-
-  // updates the encoders with new positions
-  public static void updateEncoders() {
-    //UPDATE LATER
-    //RobotMap.avgPositionRaw = RobotMap.MainLeftMotorBack.getSelectedSensorPosition(0);
-    //RobotMap.avgPositionInMeters = nativeUnitsToDistanceMeters(RobotMap.avgPositionRaw);
-  }
-
   // set default encoder settings needed for operation (TalonFX)
   public static void setEncoderDefaultPhoenixSettings(TalonFX motor) {
     motor.configFactoryDefault();

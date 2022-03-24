@@ -7,41 +7,52 @@ package frc.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.VictorSPXControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
+import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.hardware.encoder.EncoderSetter;
 
 public class IntakeSubsystem extends SubsystemBase {
   
-    private static IntakeSubsystem instance;
-    private VictorSPX m_IntakeMotor;
-    public Solenoid intakeSolenoid;
-    /** Creates a new Intake Subsystem. */
-  
-  
+  private static IntakeSubsystem instance;
+  private VictorSPX intakeMotor;
+  private Solenoid intakeSolenoid;
+  private Compressor pcmCompressor;
+
+  private long timeSinceStartedBeingReleasedForSolenoids = -1;
+    
   /** Creates a new Intake Subsystem. */
-  public IntakeSubsystem() {}
+  public IntakeSubsystem() {
+
+    intakeMotor = new VictorSPX(9);
+    intakeMotor.setInverted(false);
+    pcmCompressor = new Compressor(10, PneumaticsModuleType.CTREPCM);
+    pcmCompressor.enableDigital();
+
+    EncoderSetter.setEncoderDefaultPhoenixSettings(intakeMotor);
+
+  }
 
   //all possible intake function should be defined here
   //DO NOT DEFINE COMMANDS HERE, ONLY SIMPLE FUNCTIONS
-    public void ConfigMotors(){
-    m_IntakeMotor = new VictorSPX(9);
-    m_IntakeMotor.setInverted(false);
-    }
+  
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void IntakeStart(){
+  public void intakeStartExtend(){
     intakeSolenoid.set(true);
-    m_IntakeMotor.set(VictorSPXControlMode.PercentOutput,1.0);
+    intakeMotor.set(VictorSPXControlMode.PercentOutput,1.0);
   }
-  public void IntakeStop(){
-    m_IntakeMotor.set(VictorSPXControlMode.PercentOutput, 0.0);
+  public void intakeStopRetract(){
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, 0.0);
     intakeSolenoid.set(false);
   }
-  public void shooterNeed(){
+  public void intakeExtend(){
     intakeSolenoid.set(true);
   }
+
   @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation

@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.DriveConstants;
+import frc.robot.hardware.encoder.EncoderSetter;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   
@@ -29,6 +30,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
 
   private static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 
+  public static boolean isAligningCoroutine = false;
+  public static boolean inAutonomous = false;
+  public static double angle = 0.0;// angle for robot to align to when in aligining command
+  public static boolean angleMode = false; // false means to target to the limelight
+
   /** Creates a new DriverTrain Subsystem. */
   public DriveTrainSubsystem() {
 
@@ -39,6 +45,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
     leftFrontLeader.setInverted(true);
     rightBackFollower.setInverted(false);
     leftBackFollower.setInverted(false);
+
+    EncoderSetter.setEncoderDefaultPhoenixSettings(rightFrontLeader);
+    EncoderSetter.setEncoderDefaultPhoenixSettings(leftFrontLeader);
+    EncoderSetter.setEncoderDefaultPhoenixSettings(rightBackFollower);
+    EncoderSetter.setEncoderDefaultPhoenixSettings(leftBackFollower);
 
     diffDrive = new DifferentialDrive(
       new MotorControllerGroup(rightFrontLeader, rightBackFollower), 
@@ -71,13 +82,11 @@ public class DriveTrainSubsystem extends SubsystemBase {
   }
 
   public double getLeftEncoderDistance() {
-    //return leftFrontLeader.getSelectedSensorPosition() * DriveConstants.DRIVE_NU_TO_METER;
-    return 0;
+    return leftFrontLeader.getSelectedSensorPosition() * DriveConstants.DRIVE_NU_TO_METER;
   }
 
   public double getRightEncoderDistance() {
-    //return rightFrontLeader.getSelectedSensorPosition() * DriveConstants.DRIVE_NU_TO_METER;
-    return 0;
+    return rightFrontLeader.getSelectedSensorPosition() * DriveConstants.DRIVE_NU_TO_METER;
   }
 
   /**
@@ -188,6 +197,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
       leftFrontLeader.setVoltage(leftVolts);
       rightFrontLeader.setVoltage(rightVolts);
       diffDrive.feed();
+  }
+
+  public void stop(){
+    diffDrive.stopMotor();
   }
 
   /**

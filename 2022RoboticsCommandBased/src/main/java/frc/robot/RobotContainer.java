@@ -50,19 +50,14 @@ public class RobotContainer {
     m_intake = IntakeSubsystem.getInstance();
     m_shooter = ShooterSubsystem.getInstance();
 
-    pilotController = new Controller(); //Controller Wrapper class has not been created yet
-    coPilotController = new Controller(); 
-
-
-    
     pilotController = new Controller(0);
     coPilotController = new Controller(1);
 
     m_limelight = new Limelight();
 
-    /*m_commandScheduler.setDefaultCommand(m_drivetrain, 
-        new WorseKearnyDriving(m_drivetrain, pilotController::getLeftStickY(), pilotController::getRightStickX()));
-    */
+    m_commandScheduler.setDefaultCommand(m_drivetrain, 
+        new WorseKearnyDriving(m_drivetrain, pilotController::getLeftStickY, pilotController::getRightStickX));
+    
 
     // Configure the button bindings
     configureButtonBindings();

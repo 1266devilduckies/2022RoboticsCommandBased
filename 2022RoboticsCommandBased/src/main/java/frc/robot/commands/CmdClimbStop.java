@@ -7,16 +7,16 @@ import frc.robot.subsystems.ClimberSubsystem;
 
 public class CmdClimbStop extends CommandBase {
   // The subsystem the command runs on
-  private final Subsystem m_ClimbSubsystem;
+  private final ClimberSubsystem m_climbSubsystem;
 
   public CmdClimbStop(ClimberSubsystem subsystem) {
-    m_ClimbSubsystem = subsystem;
-    addRequirements(m_ClimbSubsystem);
+    m_climbSubsystem = subsystem;
+    addRequirements(m_climbSubsystem);
   }
 
   @Override
   public void initialize() {
-    ((ClimberSubsystem) m_ClimbSubsystem).bothStop();//? maybe causing it to fail
+    m_climbSubsystem.bothStop();
   }
 
   @Override

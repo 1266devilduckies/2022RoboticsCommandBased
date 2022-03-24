@@ -18,21 +18,7 @@ import edu.wpi.first.math.controller.PIDController;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static double velocity = 0.0;
-    public static double avgPositionRaw;
-    public static double avgPositionInMeters;
-    public static boolean inFiringCoroutine;
-    public static long timeSinceStartedBeingReleasedForShooter = -1;
-    public static long timeSinceStartedBeingReleasedForSolenoids = -1;
-    public static ADXRS450_Gyro gyro;
-    public static Compressor pcmCompressor;
-    public static boolean isAligningCoroutine = false;
-    public static boolean fullShooterPower = true;
-    public static boolean inAutonomous = false;
-    public static double angle = 0.0;// angle for robot to align to when in aligining command
-    public static boolean angleMode = false; // false means to target to the limelight
-    // The robot's drive
-   
+    
     /*
      * to change the kF go in phoenix tuner > control > percent output
      * fiddle with it until when you click self test snapshot the velocity is close
@@ -41,47 +27,10 @@ public final class Constants {
      * the first multiple in front of 1023.0.
      * set the velocity from self test snapshot into the velocityTarget variable
      */
-    public static double velocityTarget = 13250.0;// 14000.0;
-    public static double velocityFeeder = 13250.0;
-    public static double kF = 0.045;// .0455
-    public static double kP = 0.02; // .02
-    public static double kFIndex = 0.045;
-    public static double kPIndex = 0.02;
-    public static double kPAligner = 0.04;
-    public static double kDAligner = 0.0;
-    public static PIDController alignerController = new PIDController(kPAligner, 0.0, kDAligner);
-    public static double kF2 = (0.6343 * 1023.0) / velocityTarget;
-    public static double kP2 = 0.0299999714;
-    public static double kI2 = 9.98973846E-05;
-    public static double kD2 = 0.03999996;
+
+    
     public static int numOfTogglesOnSolenoids = 0;
-    public static boolean reachedGoal = false;
-    public static boolean turnedaround = false;
-    public static boolean shotFirstShotInAuto = false;
-    public static double tankDriveInPlaceError = 0.0;
-    public static int climberDelay = 1000;
-   
-  
-    public static final double ksVolts = 0.67766;
-    public static final double kvVoltSecondsPerMeter = 2.2804;
-    public static final double kaVoltSecondsSquaredPerMeter = 0.6814;
-  
-    public static final double kMaxSpeedMetersPerSecond = 3;
-    public static final double kMaxAccelerationMetersPerSecondSquared = 3;
-    public static final double kPDriveVel = 3.473;
-  
-    // Reasonable baseline values for a RAMSETE follower in units of meters and
-    // seconds
-    public static final double kRamseteB = 2;
-    public static final double kRamseteZeta = 0.7;
-  
-    public static final double kTrackwidthMeters = 0.762;
-    public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
-        kTrackwidthMeters);
-  
-    public static final int kEncoderCPR = 2048;
-    public static final double kWheelDiameterMeters = 0.1524;
-    public static final double kEncoderDistancePerPulse = (kWheelDiameterMeters * Math.PI) / (double) kEncoderCPR;
+    
   
 
     public static class ExampleConstants {
@@ -91,28 +40,76 @@ public final class Constants {
 
     }
 
+    public static class Ports {
+
+    }
+
     public static class DriveConstants {
 
         // Constants related to Drive/Ramsete/DifferentialDrive
+        public static final double ALIGNER_kP = 0.04;
+        public static final double ALIGHER_kD = 0.0;
+        public static PIDController alignerController = new PIDController(ALIGNER_kP, 0.0, ALIGHER_kD);
+
+        public static final double DRIVE_ks_VOLTS = 0.67766;
+        public static final double DRIVE_kv_VOLT_SECONDS_PER_METER = 2.2804;
+        public static final double DRIVE_ka_VOLT_SECONDS_SQUARED_PER_METER = 0.6814;
+    
+        public static final double DRIVE_k_MAX_SPEED_METERS_PER_SECOND = 3;
+        public static final double DRIVE_K_MAX_ACCELERATION_METERS_PER_SECOND_SQUARED = 3;
+        public static final double DRIVE_kP_DRIVE_VELOCITY = 3.473;
+    
+        // Reasonable baseline values for a RAMSETE follower in units of meters and
+        // seconds
+        public static final double RAMSETE_k_B = 2;
+        public static final double RAMSETE_k_Zeta = 0.7;
+    
+        public static final double DRIVE_k_TRACK_WIDTH_METERS = 0.762;
+        public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(
+            DRIVE_k_TRACK_WIDTH_METERS);
+    
+        public static final int DRIVE_ENCODER_CPR = 2048;
+        public static final double DRIVE_WHEEL_DIAMETER_METERS = 0.0508;
+        public static final double DRIVE_ENCODER_DISTANCE_PER_PULSE = (DRIVE_WHEEL_DIAMETER_METERS * Math.PI) / (double) DRIVE_ENCODER_CPR;
+
+        public static final double DRIVE_GEAR = 8.333;
+        public static final double FALCON_ENCODER_RESOLUTION = 2048.0;
+
+        public static final double ENCODER_DISTANCE_PER_MARK = DRIVE_WHEEL_DIAMETER_METERS * 2 * Math.PI / FALCON_ENCODER_RESOLUTION;
+        public static final double DRIVE_NU_TO_METER = ENCODER_DISTANCE_PER_MARK / DRIVE_GEAR; // conversion tool
 
     }
 
     public static class ClimberConstants {
 
         // Constants related to Climber
+        public static int CLIMBER_DELAY = 1000;
 
     }
 
     public static class ShooterConstants {
 
         // Constants related to Shooter
+        public static final double SHOOTER_VELOCITY_TARGET = 13250.0;// 14000.0;
+        public static double FEEDER_VELOCITY_TARGET = 13250.0;
+
+        public static final double SHOOTER_kF = 0.045;// .0455
+        public static final double SHOOTER_kP = 0.02; // .02
+        public static final double SHOOTER_kFIndex = 0.045;
+        public static final double SHOOTER_kPIndex = 0.02;
+        public static final double SHOOTER_kD = 0.01;
+
+        public static final double SHOOTER_kF_2 = (0.6343 * 1023.0) / SHOOTER_VELOCITY_TARGET;
+        public static final double SHOOTER_kP_2 = 0.0299999714;
+        public static final double SHOOTER_kI_2 = 9.98973846E-05;
+        public static final double SHOOTER_kD_2 = 0.03999996;
 
     }
 
     public static class IntakeConstants {
 
         // Constants related to Intake
-
+   
     } 
 
     public static class VisionConstants {

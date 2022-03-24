@@ -7,16 +7,16 @@ import frc.robot.subsystems.IntakeSubsystem;
 
 public class CmdExtendRunIntake extends CommandBase {
   // The subsystem the command runs on
-  private final Subsystem m_IntakeSubsystem;
+  private final IntakeSubsystem m_intakeSubsystem;
 
   public CmdExtendRunIntake(IntakeSubsystem subsystem) {
-    m_IntakeSubsystem = subsystem;
-    addRequirements(m_IntakeSubsystem);
+    m_intakeSubsystem = subsystem;
+    addRequirements(m_intakeSubsystem);
   }
 
   @Override
   public void initialize() {
-    ((IntakeSubsystem) m_IntakeSubsystem).IntakeStart();//? maybe causing it to fail
+    m_intakeSubsystem.intakeStartExtend();
   }
 
   @Override

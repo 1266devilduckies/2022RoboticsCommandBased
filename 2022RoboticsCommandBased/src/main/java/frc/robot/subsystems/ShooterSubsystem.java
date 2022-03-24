@@ -6,17 +6,48 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.hardware.encoder.EncoderSetter;
 
 public class ShooterSubsystem extends SubsystemBase {
   
   private static ShooterSubsystem instance;
-  private TalonFX m_Shooter1, m_shooter2, m_Feeder1;
+  private WPI_TalonFX shooterMotor1 = new WPI_TalonFX(8);
+  private WPI_TalonFX shooterMotor2 = new WPI_TalonFX(7);
+  private WPI_TalonFX feederMotor1 = new WPI_TalonFX(6);
+
+  private boolean inFiringCoroutine;
+  private long timeSinceStartedBeingReleasedForShooter = -1;
+  private boolean fullShooterPower = true;
+  private double velocity;
   
   /** Creates a new Shooter Subsystem. */
-  public ShooterSubsystem() {}
+  public ShooterSubsystem() {
+
+    shooterMotor2.setInverted(true);
+    shooterMotor2.set(ControlMode.Follower, 8);
+
+    EncoderSetter.setEncoderDefaultPhoenixSettings(shooterMotor1);
+    EncoderSetter.setEncoderDefaultPhoenixSettings(shooterMotor2);
+    EncoderSetter.setEncoderDefaultPhoenixSettings(feederMotor1);
+
+    shooterMotor1.config_kF(0, ShooterConstants.SHOOTER_kF);
+    shooterMotor1.config_kP(0, ShooterConstants.SHOOTER_kP);
+    shooterMotor2.config_kF(0, ShooterConstants.SHOOTER_kF);
+    shooterMotor2.config_kP(0, ShooterConstants.SHOOTER_kP);
+    shooterMotor2.config_kD(0, ShooterConstants.SHOOTER_kD);
+    shooterMotor1.config_kD(0, ShooterConstants.SHOOTER_kD);
+    feederMotor1.config_kF(0, ShooterConstants.SHOOTER_kFIndex);
+    feederMotor1.config_kP(0, ShooterConstants.SHOOTER_kPIndex);
+
+    velocity = fullShooterPower ? ShooterConstants.FEEDER_VELOCITY_TARGET : ShooterConstants.SHOOTER_VELOCITY_TARGET / 2.0;
+    
+
+  }
 
   //all possible drivetrain function should be defined here
   //DO NOT DEFINE COMMANDS HERE, ONLY SIMPLE FUNCTIONS
@@ -25,28 +56,27 @@ public class ShooterSubsystem extends SubsystemBase {
   public void periodic() {
     // This method will be called once per scheduler run
   }
-  public void ConfigMotors(){
-    m_Shooter1 = new TalonFX(8);
-    m_shooter2 = new TalonFX(7);
-    m_Feeder1 = new TalonFX(6);
-    m_shooter2.setInverted(true);
-    m_shooter2.set(ControlMode.Follower, 8);
-    }
-  public void PewPewStart(){
-    long dt = System.currentTimeMillis() - Constants.timeSinceStartedBeingReleasedForShooter;
+  
+  public void pewPewStart(){
+    long dt = System.currentTimeMillis() - timeSinceStartedBeingReleasedForShooter;
     // delay is measured in milliseconds
     if (dt >= 4500) {
-      Constants.inFiringCoroutine = false;
+      inFiringCoroutine = false;
     } else if (dt >= 3000) {
-      m_Feeder1.set(ControlMode.Velocity, Constants.velocityFeeder);
+      feederMotor1.set(ControlMode.Velocity, ShooterConstants.FEEDER_VELOCITY_TARGET);
     } else if (dt >= 2000) {
-      m_Feeder1.set(ControlMode.Velocity, 0);
+      feederMotor1.set(ControlMode.Velocity, 0);
     } else if (dt >= 1550) {
-      m_Feeder1.set(ControlMode.Velocity, Constants.velocityFeeder);
+      feederMotor1.set(ControlMode.Velocity, ShooterConstants.FEEDER_VELOCITY_TARGET);
     } else {
-      m_Shooter1.set(ControlMode.Velocity, Constants.velocity);
+      shooterMotor1.set(ControlMode.Velocity, velocity);
     }
   }
+
+  public void setStartTime(){
+    timeSinceStartedBeingReleasedForShooter = System.currentTimeMillis();
+  }
+
     @Override
   public void simulationPeriodic() {
     // This method will be called once per scheduler run during simulation
@@ -64,6 +94,4 @@ public class ShooterSubsystem extends SubsystemBase {
     return instance;
   }
 
-  public void bothExtend() {
-  }
 }
