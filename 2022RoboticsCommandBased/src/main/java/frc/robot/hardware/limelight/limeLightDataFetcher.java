@@ -32,7 +32,7 @@ public class limeLightDataFetcher {
         return dy;
     }
 
-    // returns wether target is in frame
+    // returns whether target is in frame
     public static double seeIfTargetsExist() {
         return canSeeAnyTarget;
     }

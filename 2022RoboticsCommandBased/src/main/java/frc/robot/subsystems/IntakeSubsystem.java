@@ -20,7 +20,7 @@ public class IntakeSubsystem extends SubsystemBase {
   private Solenoid intakeSolenoid;
   private Compressor pcmCompressor;
 
-  private long timeSinceStartedBeingReleasedForSolenoids = -1;
+  //private long timeSinceStartedBeingReleasedForSolenoids = -1;
     
   /** Creates a new Intake Subsystem. */
   public IntakeSubsystem() {
@@ -51,6 +51,9 @@ public class IntakeSubsystem extends SubsystemBase {
   }
   public void intakeExtend(){
     intakeSolenoid.set(true);
+  }
+  public void intakeReverse(){
+    intakeMotor.set(VictorSPXControlMode.PercentOutput, -1.0);
   }
 
   @Override

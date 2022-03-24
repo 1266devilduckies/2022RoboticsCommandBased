@@ -5,24 +5,22 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.hardware.encoder.EncoderSetter;
 
 public class ShooterSubsystem extends SubsystemBase {
   
   private static ShooterSubsystem instance;
-  private WPI_TalonFX shooterMotor1 = new WPI_TalonFX(8);
-  private WPI_TalonFX shooterMotor2 = new WPI_TalonFX(7);
-  private WPI_TalonFX feederMotor1 = new WPI_TalonFX(6);
+  public static WPI_TalonFX shooterMotor1 = new WPI_TalonFX(8);
+  public WPI_TalonFX shooterMotor2 = new WPI_TalonFX(7);
+  public static WPI_TalonFX feederMotor1 = new WPI_TalonFX(6);
 
-  private boolean inFiringCoroutine;
+  public static boolean inFiringCoroutine;
   private long timeSinceStartedBeingReleasedForShooter = -1;
-  private boolean fullShooterPower = true;
+  public static boolean fullShooterPower = true;
   private double velocity;
   
   /** Creates a new Shooter Subsystem. */
@@ -71,6 +69,9 @@ public class ShooterSubsystem extends SubsystemBase {
     } else {
       shooterMotor1.set(ControlMode.Velocity, velocity);
     }
+  }
+  public void SlowShot(){
+    fullShooterPower = false;
   }
 
   public void setStartTime(){
