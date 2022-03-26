@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Ports;
+import frc.robot.commands.WorseKearnyDriving;
 
 public class DriveTrainSubsystem extends SubsystemBase {
   
@@ -22,10 +24,10 @@ public class DriveTrainSubsystem extends SubsystemBase {
   private final DifferentialDrive diffDrive;
   private final DifferentialDriveOdometry diffDriveOdometry;
 
-  private final WPI_TalonFX rightFrontLeader = new WPI_TalonFX(0);
-  private final WPI_TalonFX leftFrontLeader = new WPI_TalonFX(1);
-  private final WPI_TalonFX rightBackFollower = new WPI_TalonFX(2);
-  private final WPI_TalonFX leftBackFollower = new WPI_TalonFX(3);
+  private final WPI_TalonFX rightFrontLeader = new WPI_TalonFX(Ports.MOTOR_RIGHT_FRONT);
+  private final WPI_TalonFX leftFrontLeader = new WPI_TalonFX(Ports.MOTOR_LEFT_FRONT);
+  private final WPI_TalonFX rightBackFollower = new WPI_TalonFX(Ports.MOTOR_RIGHT_BACK);
+  private final WPI_TalonFX leftBackFollower = new WPI_TalonFX(Ports.MOTOR_LEFT_BACK);
 
   private static ADXRS450_Gyro gyro = new ADXRS450_Gyro();
 

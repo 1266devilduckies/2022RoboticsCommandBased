@@ -9,7 +9,7 @@ import frc.robot.subsystems.ShooterSubsystem;
 
 public class CmdPewPewStart extends CommandBase {
   // The subsystem the command runs on
-  private final Subsystem m_ShooterSubsystem;
+  private final ShooterSubsystem m_ShooterSubsystem;
 
   public CmdPewPewStart(ShooterSubsystem subsystem) {
     m_ShooterSubsystem = subsystem;
@@ -18,7 +18,13 @@ public class CmdPewPewStart extends CommandBase {
 
   @Override
   public void initialize() {
-    ((ShooterSubsystem) m_ShooterSubsystem).pewPewStart();//? maybe causing it to fail
+    ShooterSubsystem.inFiringCoroutine = true;
+    m_ShooterSubsystem.setHighShot();
+    m_ShooterSubsystem.setStartTime();
+  }
+
+  public void execute(){
+    m_ShooterSubsystem.pewPewStart();
   }
 
   // Make this return true when this Command no longer needs to run execute()
@@ -30,7 +36,6 @@ public class CmdPewPewStart extends CommandBase {
   // Called once after isFinished returns true
   @Override
   public void end(boolean interrupted) {
-    ShooterSubsystem.fullShooterPower = true;
     ShooterSubsystem.feederMotor1.set(ControlMode.Velocity, 0);
     ShooterSubsystem.shooterMotor1.set(ControlMode.Velocity, 0);
   }

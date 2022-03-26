@@ -8,15 +8,16 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Ports;
 import frc.robot.Constants.ShooterConstants;
 import frc.robot.hardware.encoder.EncoderSetter;
 
 public class ShooterSubsystem extends SubsystemBase {
   
   private static ShooterSubsystem instance;
-  public static WPI_TalonFX shooterMotor1 = new WPI_TalonFX(8);
-  public WPI_TalonFX shooterMotor2 = new WPI_TalonFX(7);
-  public static WPI_TalonFX feederMotor1 = new WPI_TalonFX(6);
+  public static WPI_TalonFX shooterMotor1 = new WPI_TalonFX(Ports.MOTOR_SHOOTER_1);
+  public WPI_TalonFX shooterMotor2 = new WPI_TalonFX(Ports.MOTOR_SHOOTER_2);
+  public static WPI_TalonFX feederMotor1 = new WPI_TalonFX(Ports.MOTOR_FEEDER);
 
   public static boolean inFiringCoroutine;
   private long timeSinceStartedBeingReleasedForShooter = -1;
@@ -70,12 +71,21 @@ public class ShooterSubsystem extends SubsystemBase {
       shooterMotor1.set(ControlMode.Velocity, velocity);
     }
   }
-  public void SlowShot(){
+  public void setSlowShot(){
     fullShooterPower = false;
+  }
+
+  public void setHighShot(){
+    fullShooterPower = true;
   }
 
   public void setStartTime(){
     timeSinceStartedBeingReleasedForShooter = System.currentTimeMillis();
+  }
+
+  public void stop(){
+    ShooterSubsystem.feederMotor1.set(ControlMode.Velocity, 0);
+    ShooterSubsystem.shooterMotor1.set(ControlMode.Velocity, 0);
   }
 
     @Override

@@ -16,11 +16,24 @@ public class CmdSlowShot extends CommandBase {
 
   @Override
   public void initialize() {
-    m_ShooterSubsystem.SlowShot();
+    ShooterSubsystem.inFiringCoroutine = true;
+    m_ShooterSubsystem.setSlowShot();
+    m_ShooterSubsystem.setStartTime();
+  }
+
+  @Override
+  public void execute() {
+    m_ShooterSubsystem.pewPewStart();
   }
 
   @Override
   public boolean isFinished() {
-    return true;
+    return !ShooterSubsystem.inFiringCoroutine;
+  }
+
+  // Called once after isFinished returns true
+  @Override
+  public void end(boolean interrupted) {
+    m_ShooterSubsystem.stop();
   }
 }

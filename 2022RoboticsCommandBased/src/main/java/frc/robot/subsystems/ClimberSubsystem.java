@@ -8,13 +8,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Ports;
 import frc.robot.hardware.encoder.EncoderSetter;
 
 public class ClimberSubsystem extends SubsystemBase {
   
   private static ClimberSubsystem instance;
-  private VictorSPX climberMotor1 = new VictorSPX(10);
-  private VictorSPX climberMotor2 = new VictorSPX(11);
+  private VictorSPX climberMotor1 = new VictorSPX(Ports.MOTOR_CLIMBER_1);
+  private VictorSPX climberMotor2 = new VictorSPX(Ports.MOTOR_CLIMBER_2);
 
   
   /** Creates a new Climber Subsystem. */

@@ -39,7 +39,18 @@ public final class Constants {
     }
 
     public static class Ports {
-
+        public static final int MOTOR_RIGHT_FRONT = 0;
+        public static final int MOTOR_RIGHT_BACK = 1;
+        public static final int MOTOR_LEFT_FRONT = 2;
+        public static final int MOTOR_LEFT_BACK = 3;
+        public static final int MOTOR_SHOOTER_1 = 4;
+        public static final int MOTOR_SHOOTER_2 = 5;
+        public static final int MOTOR_FEEDER = 6;
+        public static final int MOTOR_INTAKE = 7;
+        public static final int MOTOR_CLIMBER_1 = 8;
+        public static final int MOTOR_CLIMBER_2 = 9;
+        public static final int SOLENOID = 10;
+        public static final int COMPRESSOR = 11;
     }
 
     public static class DriveConstants {
@@ -104,15 +115,14 @@ public final class Constants {
 
     }
 
-    public static class IntakeConstants {
+    public static class ButtonConstants {
 
-        // Constants related to Intake
-   
-    } 
-
-    public static class VisionConstants {
-
-        // Constants related to Vision/Limelight
+        //Constants related to Buttons
+        public static final int INTAKE = 0;
+        public static final int REVERSE_INTAKE_POV = 0;
+        public static final int SLOW_SHOT = 0;
+        public static final int HIGH_SHOT = 0;
+        public static final int CLIMB = 0;
 
     }
 

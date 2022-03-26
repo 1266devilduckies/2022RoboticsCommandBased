@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PneumaticsModuleType;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.Ports;
 import frc.robot.hardware.encoder.EncoderSetter;
 
 public class IntakeSubsystem extends SubsystemBase {
@@ -25,9 +26,9 @@ public class IntakeSubsystem extends SubsystemBase {
   /** Creates a new Intake Subsystem. */
   public IntakeSubsystem() {
 
-    intakeMotor = new VictorSPX(9);
+    intakeMotor = new VictorSPX(Ports.MOTOR_INTAKE);
     intakeMotor.setInverted(false);
-    pcmCompressor = new Compressor(10, PneumaticsModuleType.CTREPCM);
+    pcmCompressor = new Compressor(Ports.COMPRESSOR, PneumaticsModuleType.CTREPCM);
     pcmCompressor.enableDigital();
 
     EncoderSetter.setEncoderDefaultPhoenixSettings(intakeMotor);
