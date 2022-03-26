@@ -6,6 +6,7 @@ package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.Ports;
@@ -14,8 +15,8 @@ import frc.robot.hardware.encoder.EncoderSetter;
 public class ClimberSubsystem extends SubsystemBase {
   
   private static ClimberSubsystem instance;
-  private VictorSPX climberMotor1 = new VictorSPX(Ports.MOTOR_CLIMBER_1);
-  private VictorSPX climberMotor2 = new VictorSPX(Ports.MOTOR_CLIMBER_2);
+  private WPI_TalonFX climberMotor1 = new WPI_TalonFX(Ports.MOTOR_CLIMBER_1);
+  private WPI_TalonFX climberMotor2 = new WPI_TalonFX(Ports.MOTOR_CLIMBER_2);
 
   
   /** Creates a new Climber Subsystem. */

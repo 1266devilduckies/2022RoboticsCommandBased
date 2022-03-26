@@ -30,6 +30,7 @@ public class IntakeSubsystem extends SubsystemBase {
     intakeMotor.setInverted(false);
     pcmCompressor = new Compressor(Ports.COMPRESSOR, PneumaticsModuleType.CTREPCM);
     pcmCompressor.enableDigital();
+    intakeSolenoid = new Solenoid(Ports.COMPRESSOR, PneumaticsModuleType.CTREPCM, Ports.SOLENOID);
 
     EncoderSetter.setEncoderDefaultPhoenixSettings(intakeMotor);
 

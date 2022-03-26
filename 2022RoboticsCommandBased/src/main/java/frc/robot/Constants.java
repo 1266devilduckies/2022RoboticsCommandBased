@@ -39,18 +39,18 @@ public final class Constants {
     }
 
     public static class Ports {
-        public static final int MOTOR_RIGHT_FRONT = 0;
-        public static final int MOTOR_RIGHT_BACK = 1;
-        public static final int MOTOR_LEFT_FRONT = 2;
-        public static final int MOTOR_LEFT_BACK = 3;
-        public static final int MOTOR_SHOOTER_1 = 4;
-        public static final int MOTOR_SHOOTER_2 = 5;
-        public static final int MOTOR_FEEDER = 6;
-        public static final int MOTOR_INTAKE = 7;
-        public static final int MOTOR_CLIMBER_1 = 8;
-        public static final int MOTOR_CLIMBER_2 = 9;
-        public static final int SOLENOID = 10;
-        public static final int COMPRESSOR = 11;
+        public static final int MOTOR_RIGHT_FRONT = 2;
+        public static final int MOTOR_RIGHT_BACK = 3;
+        public static final int MOTOR_LEFT_FRONT = 1;
+        public static final int MOTOR_LEFT_BACK = 0;
+        public static final int MOTOR_SHOOTER_1 = 5;
+        public static final int MOTOR_SHOOTER_2 = 8;
+        public static final int MOTOR_FEEDER = 9;
+        public static final int MOTOR_INTAKE = 4;
+        public static final int MOTOR_CLIMBER_1 = 12;
+        public static final int MOTOR_CLIMBER_2 = 13;
+        public static final int SOLENOID = 0;
+        public static final int COMPRESSOR = 10;
     }
 
     public static class DriveConstants {
