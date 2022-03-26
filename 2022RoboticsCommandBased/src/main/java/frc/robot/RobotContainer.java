@@ -4,6 +4,12 @@
 
 package frc.robot;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.RamseteController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.Trajectory;
+import edu.wpi.first.math.trajectory.TrajectoryConfig;
+import edu.wpi.first.math.trajectory.constraint.DifferentialDriveVoltageConstraint;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.hardware.input.Controller;
@@ -12,9 +18,11 @@ import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.DriveTrainSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import edu.wpi.first.wpilibj2.command.Command;
+//import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.Constants.ButtonConstants;
+import frc.robot.Constants.DriveConstants;
+import frc.robot.autonomous.Trajectories;
 import frc.robot.commands.CmdClimbStart;
 import frc.robot.commands.CmdClimbStop;
 import frc.robot.commands.CmdExtendRunIntake;
@@ -27,6 +35,8 @@ import frc.robot.commands.WorseKearnyDriving;
 //import edu.wpi.first.wpilibj2.command.Command;
 //import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.button.*;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
@@ -138,13 +148,91 @@ public class RobotContainer {
 		}
 	}
 
+
+  public SequentialCommandGroup generateTrajectoryCommand(Trajectory trajectory) {
+    RamseteCommand ramseteCommand = new RamseteCommand(
+        trajectory,
+        m_drivetrain::getPose,
+        new RamseteController(DriveConstants.RAMSETE_k_B, DriveConstants.RAMSETE_k_Zeta),
+        new SimpleMotorFeedforward(
+            DriveConstants.DRIVE_ks_VOLTS,
+            DriveConstants.DRIVE_kv_VOLT_SECONDS_PER_METER,
+            DriveConstants.DRIVE_ka_VOLT_SECONDS_SQUARED_PER_METER),
+        DriveConstants.kDriveKinematics,
+        m_drivetrain::getWheelSpeeds,
+        new PIDController(DriveConstants.DRIVE_kP_DRIVE_VELOCITY, 0, 0),
+        new PIDController(DriveConstants.DRIVE_kP_DRIVE_VELOCITY, 0, 0),
+        // RamseteCommand passes volts to the callback
+        m_drivetrain::tankDriveVolts,
+        m_drivetrain);
+    //m_robotDrive.resetOdometry(trajectory.getInitialPose());
+    return ramseteCommand.andThen(() -> m_drivetrain.arcadeDrive(0.0, 0.0));
+  }
+
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
    */
-  public Command getAutonomousCommand() {
-    return null;
+  public SequentialCommandGroup getAutonomousCommand(int num) {
+
+    // Create a voltage constraint to ensure we don't accelerate too fast
+    var autoVoltageConstraint = new DifferentialDriveVoltageConstraint(
+        new SimpleMotorFeedforward(
+          DriveConstants.DRIVE_ks_VOLTS,
+          DriveConstants.DRIVE_kv_VOLT_SECONDS_PER_METER,
+          DriveConstants.DRIVE_ka_VOLT_SECONDS_SQUARED_PER_METER),
+          DriveConstants.kDriveKinematics,
+        10);
+
+    // Create config for trajectory
+    TrajectoryConfig config = new TrajectoryConfig(
+        DriveConstants.DRIVE_k_MAX_SPEED_METERS_PER_SECOND,
+        DriveConstants.DRIVE_K_MAX_ACCELERATION_METERS_PER_SECOND_SQUARED)
+            // Add kinematics to ensure max speed is actually obeyed
+            .setKinematics(DriveConstants.kDriveKinematics)
+            // Apply the voltage constraint
+            .addConstraint(autoVoltageConstraint);
+
+      SequentialCommandGroup pathToGo = new SequentialCommandGroup();
+      if(num == 1){
+        Trajectory init = Trajectories.auto1Part1;
+        m_drivetrain.resetOdometry(init.getInitialPose());
+        //move back and play defense
+        pathToGo = new SequentialCommandGroup(generateTrajectoryCommand(Trajectories.auto1Part1));
+      } else if (num == 2) {
+        Trajectory init = Trajectories.auto2Part1;
+        m_drivetrain.resetOdometry(init.getInitialPose());
+        //2 ball auto
+        pathToGo = new SequentialCommandGroup(generateTrajectoryCommand(Trajectories.auto2Part1), 
+        new CmdExtendRunIntake(m_intake), 
+        generateTrajectoryCommand(Trajectories.auto2Part2), 
+        new CmdRetractIntake(m_intake), 
+        generateTrajectoryCommand(Trajectories.auto2Part3), 
+        new CmdPewPewStart(m_shooter));
+      } else if (num == 3) {
+        //4 ball auto
+        Trajectory init = Trajectories.auto8Part1;
+        m_drivetrain.resetOdometry(init.getInitialPose());
+        pathToGo = new SequentialCommandGroup(new CmdExtendRunIntake(m_intake), 
+        generateTrajectoryCommand(init), 
+        new CmdRetractIntake(m_intake), 
+        generateTrajectoryCommand(Trajectories.auto8Part2),
+        new CmdPewPewStart(m_shooter),
+        generateTrajectoryCommand(Trajectories.auto8Part3),
+        new CmdExtendRunIntake(m_intake),
+        generateTrajectoryCommand(Trajectories.auto8Part4),
+        new CmdRetractIntake(m_intake),
+        generateTrajectoryCommand(Trajectories.auto8Part5),
+        new CmdExtendRunIntake(m_intake),
+        generateTrajectoryCommand(Trajectories.auto8Part6),
+        new CmdRetractIntake(m_intake),
+        generateTrajectoryCommand(Trajectories.auto8Part7),
+        new CmdPewPewStart(m_shooter)
+        );
+      }
+
+    return pathToGo;
   }
 
   public Limelight getLimelight(){
